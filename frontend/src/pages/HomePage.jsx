@@ -5,6 +5,7 @@ import RateLimitedUI from "../components/RateLimitedUI";
 import NoteCard from "../components/NoteCard";
 import toast from "react-hot-toast";
 import { api } from "../lib/axios";
+import { LoaderIcon } from "lucide-react";
 import NotesNotFound from "../components/NotesNotFound";
 const HomePage = () => {
     const [isRateLimited, setIsRateLimited] = useState(false);
