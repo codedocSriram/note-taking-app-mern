@@ -4,6 +4,7 @@ import { useAuth, SignIn } from "@clerk/react";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
 import NoteDetailPage from "./pages/NoteDetailPage";
+import { LoaderIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import LoginPage from "./pages/LoginPage";
 
@@ -28,7 +29,11 @@ function PublicRoute({ children }) {
     const { isLoaded, userId } = useAuth();
 
     if (!isLoaded) {
-        return <h1>Loading...</h1>;
+        return (
+            <div className="min-h-screen bg-base-200 flex items-center justify-center">
+                <LoaderIcon className="animate-spin size-10 text-primary" />
+            </div>
+        );
     }
 
     if (userId) {
