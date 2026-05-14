@@ -7,7 +7,6 @@ import "./index.css";
 import App from "./App.jsx";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-console.log("Publishable key: ", PUBLISHABLE_KEY);
 if (!PUBLISHABLE_KEY) {
     throw new Error("Missing Publishable Key");
 }
