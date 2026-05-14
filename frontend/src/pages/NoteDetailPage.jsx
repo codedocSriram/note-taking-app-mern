@@ -77,15 +77,18 @@ const NoteDetailPage = () => {
             <div className="container mx-auto px-4 py-8">
                 <div className="max-w-2xl mx-auto">
                     <div className="flex items-center justify-between mb-6">
-                        <Link to="/" className="btn btn-ghost">
-                            <ArrowLeftIcon className="h-5 w-5" />
+                        <Link
+                            to="/"
+                            className="btn btn-ghost mb-6 border-1 border-white border-solid"
+                        >
+                            <ArrowLeftIcon className="size-5 text-primary" />
                             Back to Notes
                         </Link>
                         <button
                             onClick={handleDelete}
-                            className="btn btn-error btn-outline"
+                            className="btn btn-error btn-outline mb-6"
                         >
-                            <Trash2Icon className="h-5 w-5" />
+                            <Trash2Icon className="size-5" />
                             Delete Note
                         </button>
                     </div>
@@ -94,12 +97,13 @@ const NoteDetailPage = () => {
                         <div className="card-body">
                             <div className="form-control mb-4">
                                 <label className="label">
-                                    <span className="label-text">Title</span>
+                                    <span className="label-text font-bold">
+                                        Title:
+                                    </span>
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder="Note title"
-                                    className="input input-bordered"
+                                    className="input input-bordered placeholder:text-primary text-primary"
                                     value={note.title}
                                     onChange={(e) =>
                                         setNote({
@@ -112,11 +116,12 @@ const NoteDetailPage = () => {
 
                             <div className="form-control mb-4">
                                 <label className="label">
-                                    <span className="label-text">Content</span>
+                                    <span className="label-text font-bold">
+                                        Content:
+                                    </span>
                                 </label>
                                 <textarea
-                                    placeholder="Write your note here..."
-                                    className="textarea textarea-bordered h-32"
+                                    className="textarea textarea-bordered h-32 placeholder:text-secondary text-secondary"
                                     value={note.content}
                                     onChange={(e) =>
                                         setNote({
