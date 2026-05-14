@@ -13,7 +13,11 @@ function ProtectedRoute({ children }) {
 
     // Wait for Clerk to initialize
     if (!isLoaded) {
-        return <h1>Loading...</h1>;
+        return (
+            <div className="min-h-screen bg-base-200 flex items-center justify-center">
+                <LoaderIcon className="animate-spin size-10 text-primary" />
+            </div>
+        );
     }
 
     // If no authenticated user → redirect
