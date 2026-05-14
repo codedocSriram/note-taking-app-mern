@@ -29,10 +29,8 @@ const NoteCard = (props) => {
     border-t-4 border-solid border-[#00FF9D]"
         >
             <div className="card-body">
-                <h3 className="card-title text-base-content">
-                    {props.note.title}
-                </h3>
-                <p className="text-base-content/70 line-clamp-3">
+                <h3 className="card-title text-primary">{props.note.title}</h3>
+                <p className="text-secondary line-clamp-3">
                     {props.note.content}
                 </p>
                 <div className="card-actions justify-between items-center mt-4">
