@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
 
-// Creating a schema
-const noteSchema = new mongoose.Schema(
+const notesSchema = new mongoose.Schema(
     {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+
         title: {
             type: String,
             required: true,
@@ -11,12 +16,10 @@ const noteSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        createdAt: {},
     },
-    { timestamps: true } //this will give us the createdAt & updatedAt fields
+    { timestamps: true },
 );
 
-// Creating model based on the Schema
-const Note = mongoose.model("Note", noteSchema);
+const Note = mongoose.model("Note", notesSchema);
 
 export default Note;
