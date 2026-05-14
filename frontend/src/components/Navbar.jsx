@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { PlusIcon } from "lucide-react";
-
+import { Show, UserButton } from "@clerk/react";
 const Navbar = () => {
     return (
         <header className="bg-base-300 border-b border-base-content/10">
@@ -10,11 +10,17 @@ const Navbar = () => {
                     <h1 className="text-3xl font-bold text-primary font-mono tracking-tight">
                         MindPalace💡
                     </h1>
-                    <div className="flex items-center gap-4">
+
+                    <div className="flex items-center gap-2">
                         <Link to={"/create"} className="btn btn-primary">
                             <PlusIcon className="size-5" />
                             <span>new Note</span>
                         </Link>
+                        <div className="size-2">
+                            <Show when="signed-in">
+                                <UserButton />
+                            </Show>
+                        </div>
                     </div>
                 </div>
             </div>
