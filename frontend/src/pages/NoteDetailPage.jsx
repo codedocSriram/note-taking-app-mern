@@ -1,73 +1,89 @@
+import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import api from "../lib/axios";
-import toast from "react-hot-toast";
+import { useNavigate, useParams, Link } from "react-router";
+import { useAuth } from "@clerk/react";
+import { api } from "../lib/axios";
 import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
+import toast from "react-hot-toast";
 
-const NoteDetailPage = () => {
+const NoteDetailPage = ({ setNotes }) => {
     const [note, setNote] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-
+    const { getToken } = useAuth();
     const navigate = useNavigate();
-
     const { id } = useParams();
 
     useEffect(() => {
         const fetchNote = async () => {
             try {
-                const res = await api.get(`/notes/${id}`);
+                const token = await getToken();
+                const res = await api.get(`/notes/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 setNote(res.data);
             } catch (error) {
                 console.log("Error in fetching note", error);
-                toast.error("Failed to fetch the note");
+                toast.error("Failed to fetch notes");
             } finally {
                 setLoading(false);
             }
         };
-
         fetchNote();
     }, [id]);
 
-    const handleDelete = async () => {
-        if (!window.confirm("Are you sure you want to delete this note?"))
-            return;
+    console.log({ note });
 
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete this note?")) {
+            return;
+        }
         try {
-            await api.delete(`/notes/${id}`);
-            toast.success("Note deleted");
+            setLoading(true);
+            const token = await getToken();
+            await api.delete(`/notes/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            toast.success("Note deleted successfully!");
             navigate("/");
         } catch (error) {
-            console.log("Error deleting the note:", error);
-            toast.error("Failed to delete note");
+            console.log("Error deleteing the note", error);
+            toast.error("Error deleting the note!");
+        } finally {
+            setLoading(false);
         }
     };
-
     const handleSave = async () => {
         if (!note.title.trim() || !note.content.trim()) {
-            toast.error("Please add a title or content");
+            toast.error("Please add title or content");
             return;
         }
-
-        setSaving(true);
-
         try {
-            await api.put(`/notes/${id}`, note);
-            toast.success("Note updated successfully");
+            setSaving(true);
+            const token = await getToken();
+            await api.put(`/notes/${id}`, note, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            toast.success("Note updated Successfully!");
             navigate("/");
         } catch (error) {
-            console.log("Error saving the note:", error);
-            toast.error("Failed to update note");
+            console.log("Error updating note", error);
+            toast.error("Error updating note");
         } finally {
             setSaving(false);
         }
     };
-
     if (loading) {
         return (
             <div className="min-h-screen bg-base-200 flex items-center justify-center">
-                <LoaderIcon className="animate-spin size-10" />
+                <LoaderIcon className="animate-spin size-10 text-primary" />
             </div>
         );
     }
@@ -92,7 +108,6 @@ const NoteDetailPage = () => {
                             Delete Note
                         </button>
                     </div>
-
                     <div className="card bg-base-100">
                         <div className="card-body">
                             <div className="form-control mb-4">
@@ -102,8 +117,8 @@ const NoteDetailPage = () => {
                                     </span>
                                 </label>
                                 <input
-                                    type="text"
                                     className="input input-bordered placeholder:text-primary text-primary"
+                                    type="text"
                                     value={note.title}
                                     onChange={(e) =>
                                         setNote({
@@ -148,4 +163,5 @@ const NoteDetailPage = () => {
         </div>
     );
 };
+
 export default NoteDetailPage;

@@ -1,40 +1,40 @@
+import { api } from "../lib/axios";
 import { ArrowLeftIcon } from "lucide-react";
-import { Link, useNavigate } from "react-router";
 import React from "react";
 import { useState } from "react";
+import { useAuth } from "@clerk/react";
 import toast from "react-hot-toast";
-import api from "../lib/axios";
+import { Link, useNavigate } from "react-router";
+
 const CreatePage = () => {
+    const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(false);
-
-    const navigate = useNavigate();
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (!title.trim() || !content.trim()) {
-            toast.error("All fields required!");
+    const { getToken } = useAuth();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!title || !content) {
+            toast.error("Please fill all details.");
             return;
         }
         setLoading(true);
         try {
-            await api.post("/notes", {
+            const token = await getToken();
+            const newNote = {
                 title,
                 content,
+            };
+            await api.post("/notes", newNote, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
-            toast.success("Note created successfully!");
+            toast.success("Note Created Successfully!");
             navigate("/");
         } catch (error) {
-            console.log("Error creating note...", error);
-            if (error.response.status === 429) {
-                toast.error("Slow down...too many notes are being created!", {
-                    duration: 4000,
-                    icon: "💀",
-                });
-            } else {
-                toast.error("Failed to create note, please try again");
-            }
+            console.log(error);
+            toast.error("Failed to create note!");
         } finally {
             setLoading(false);
         }
