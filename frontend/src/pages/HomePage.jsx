@@ -6,7 +6,7 @@ import NoteCard from "../components/NoteCard";
 import toast from "react-hot-toast";
 import { api } from "../lib/axios";
 import { LoaderIcon } from "lucide-react";
-import NotesNotFound from "../components/NotesNotFound";
+import NotesNoteFound from "../components/NotesNoteFound";
 const HomePage = () => {
     const [isRateLimited, setIsRateLimited] = useState(false);
     const [notes, setNotes] = useState([]);
@@ -50,7 +50,7 @@ const HomePage = () => {
                     </div>
                 )}
 
-                {notes.length === 0 && !isRateLimited && <NotesNotFound />}
+                {notes.length === 0 && !isRateLimited && <NotesNoteFound />}
 
                 {notes.length > 0 && !isRateLimited && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
